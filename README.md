@@ -1,3 +1,4 @@
+# PyMachine
 PyMachine is a NodeJS module written in TypeScript, for running MachineLearning scripts (Python scripts) at Anaconda environment.
 
 ## Features
@@ -5,11 +6,38 @@ PyMachine is a NodeJS module written in TypeScript, for running MachineLearning 
 + Load heavy python libraries only once
 + Great performance thanks to the one-time initiation.
 
+### Dependencies
 This module dependes:
-* Anaconda (https://github.com/Anaconda-Platform/anaconda-project)
-* Python-shell (https://github.com/extrabacon/python-shell)
+* Anaconda (https://github.com/Anaconda-Platform/anaconda-project) being installed on your machine.
+* Python-shell (https://github.com/extrabacon/python-shell) (included on package.json of this module).
+* Dotenv (https://github.com/motdotla/dotenv) - not used by default, but PyMachine has an option to use an Environment variable, so it's recommented.
 
 Currently, PyMachine only works on Windows OS.
+
+## Usage
+This is how your JS code shoult look like:
+```typescript
+import { PyMachine } from "PyMachine"
+
+let pm = new PyMachine('.....path.../script.py', PATH_TO_ANACONDA);
+
+let data = { ...your data... };
+
+// Call run() as many times as you want!
+pm.run(data).then((result) => {
+  // Do whatever you want with the results
+  console.log(result);
+});
+```
+Notice that you dont have to send the Anacoda path for each PyMachine object. You can use an Environmet variable called `PYMACHINE_ANACONDA_PATH`. for example:
+```typescript
+import * as dotenv from "dotenv";
+dotenv.config({path: YOUR_ENV_FILE});
+.
+.
+let pm = new PyMachine('.....path.../script.py');
+```
+As you can see, now you don't need to send PyMachine the path of Anaconde.
 
 ### How it works:
 + PyMachine will run your python script at Anaconda environment only once.
