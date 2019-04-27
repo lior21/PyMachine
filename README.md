@@ -15,6 +15,7 @@ This module dependes:
 Currently, PyMachine only works on Windows OS.
 
 ## Usage
+### NodeJS
 This is how your JS code shoult look like:
 ```typescript
 import { PyMachine } from "PyMachine"
@@ -38,6 +39,24 @@ dotenv.config({path: YOUR_ENV_FILE});
 let pm = new PyMachine('.....path.../script.py');
 ```
 As you can see, now you don't need to send PyMachine the path of Anaconde.
+
+### Python
+And here is an example for a python script. this script listenes to `stdin` "forever" and return an answer for each data object.
+```python
+import sys
+import json
+from sklearn.neighbors import NearestNeighbors
+import numpy as np
+
+while True:
+    j = json.loads(sys.stdin.readline())
+    X = np.array(j['X'])
+    y = np.array(j['y'])
+    nbrs = NearestNeighbors(n_neighbors=2, algorithm='ball_tree').fit(X)
+    result = nbrs.kneighbors([y],return_distance=False)
+    print((''.join(str(e) for e in result)).replace(' ',','))
+    sys.stdout.flush()
+```
 
 ### How it works:
 + PyMachine will run your python script at Anaconda environment only once.
